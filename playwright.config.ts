@@ -27,8 +27,6 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -77,6 +75,18 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
+  ],
+
+
+  reporter: [
+    ['list'],                           // Detailed console output
+    ['line'],                           // One-line progress output
+    ['dot'],                            // Minimal console output
+    ['html', { open: 'always', outputFolder: 'my-reports' }],        // HTML Report
+    ['json', { outputFile: 'my-reports/results.json' }], // JSON Report
+    ['junit', { outputFile: 'my-reports/results.xml' }],  // JUnit XML Report
+    ['./tests/day26/CustomReporter.ts', { customOption: 'some value' }], // Custom reporter
+    ['allure-playwright', { outputFolder: 'allure-results' }]  // Allure Report
   ],
 
   /* Run your local dev server before starting the tests */
